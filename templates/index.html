@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Split and Plot</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    {% if not captcha_passed %}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        window.onload = function() {
+            var submitButton = document.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+        };
+
+        function correctCaptcha(response) {
+            document.getElementById("resp").value = response;
+            var submitButton = document.querySelector('button[type="submit"]');
+            submitButton.disabled = false;
+        }
+    </script>
+    {% endif %}
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Split and Plot</h1>
+
+        <h2>Split Image and Plot Color Distributions</h2>
+        <form action="/split_and_plot" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <br>
+            {% if not captcha_passed %}
+            <div class="form-group">
+                <input type="hidden" class="form-control" id="resp" name="resp" value="0" required>
+            </div>
+            <div class="form-group">
+                <div class="g-recaptcha" id="rcaptcha" data-sitekey="6LdMQuYpAAAAAEC7swo8A9nhB3vweqmE2AXSSR4o" data-callback="correctCaptcha"></div>
+            </div>
+            {% endif %}
+            <button type="submit" {% if not captcha_passed %} disabled {% endif %}>Split and Plot</button>
+        </form>
+
+        {% if parts %}
+        <h2>Split Image:</h2>
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <img src="data:image/png;base64,{{ parts[0] }}" alt="Part 1">
+            </div>
+            <div class="col-6 col-md-3">
+                <img src="data:image/png;base64,{{ parts[1] }}" alt="Part 2">
+            </div>
+            <div class="col-6 col-md-3">
+                <img src="data:image/png;base64,{{ parts[2] }}" alt="Part 3">
+            </div>
+            <div class="col-6 col-md-3">
+                <img src="data:image/png;base64,{{ parts[3] }}" alt="Part 4">
+            </div>
+        </div>
+
+        <h2>Color Distribution Graphs:</h2>
+        <img src="data:image/png;base64,{{ histogram }}" alt="Color Distribution Graphs">
+        {% endif %}
+
+        {% if error %}
+        <h2>Error:</h2>
+        <p>{{ error }}</p>
+        {% endif %}
+
+        {% if detail %}
+        <h2>Error:</h2>
+        <ul>
+            {% for error in detail %}
+            <li>{{ error.msg }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</body>
+</html>

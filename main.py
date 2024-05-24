@@ -10,6 +10,12 @@ from PIL import Image
 import os
 import requests
 
+
+if "PORT" in os.environ:
+    port = int(os.environ["PORT"])
+else:
+    port = 8000
+
 app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")

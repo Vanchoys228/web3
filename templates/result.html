@@ -1,14 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
- <meta charset="UTF-8">
- <title>FastAPI Website Starter</title>
+    <meta charset="UTF-8">
+    <title>Результат</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .image-container {
+            max-width: 100%;
+            max-height: 40vh; /* Уменьшаем максимальную высоту до 40% */
+            margin-bottom: 2rem;
+        }
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .button-container {
+            margin-top: 2rem;
+        }
+        .result-container {
+            margin-top: 3rem; /* Уменьшаем отступ сверху для опускания картинки */
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-5">
- <h1>Rotated Image</h1>
- <img src="{{ url_for('static', path=filename) }}" alt="Rotated Image" />
- <a href="/">Go back to home page</a>
-</div>
- </body>
- </html>
+    <div class="container mt-5 text-center">
+        <h1>Результат</h1>
+        <div class="result-container">
+            <h2>Разделённое изображение:</h2>
+            <div class="row justify-content-center">
+                <div class="col-6 col-md-3">
+                    <div class="image-container">
+                        <img src="data:image/png;base64,{{ parts[0] }}" alt="Часть 1">
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="image-container">
+                        <img src="data:image/png;base64,{{ parts[1] }}" alt="Часть 2">
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="image-container">
+                        <img src="data:image/png;base64,{{ parts[2] }}" alt="Часть 3">
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="image-container">
+                        <img src="data:image/png;base64,{{ parts[3] }}" alt="Часть 4">
+                    </div>
+                </div>
+            </div>
+            <h2>Графики распределения цветов:</h2>
+            <div class="image-container">
+                <img src="data:image/png;base64,{{ histogram }}" alt="Графики распределения цветов">
+            </div>
+        </div>
+        <div class="button-container">
+            <a href="/" class="btn btn-primary">Вернуться на главную</a>
+        </div>
+    </div>
+</body>
+</html>

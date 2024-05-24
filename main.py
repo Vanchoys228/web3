@@ -11,11 +11,6 @@ import os
 import requests
 
 
-if "PORT" in os.environ:
-    port = int(os.environ["PORT"])
-else:
-    port = 8000
-
 app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
@@ -88,3 +83,4 @@ async def split_and_plot(request: Request, file: UploadFile = File(...), resp: s
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port)
+
